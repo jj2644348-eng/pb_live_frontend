@@ -1,5 +1,3 @@
-      - name: Recreate Android Project Files
-        run: flutter create . --platforms=android
 name: Build PB Live APK
 
 on:
@@ -26,7 +24,7 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Recreate Android Project Files
+      - name: Create Android Project Files
         run: flutter create . --platforms=android
 
       - name: Get Dependencies
