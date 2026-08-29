@@ -1,41 +1,26 @@
-name: Build PB Live APK
+name: pb_live_frontend
+description: Official Tech Love PB Live Audio Party Room
+publish_to: 'none'
+version: 1.0.0+1
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+environment:
+  sdk: '>=3.0.0 <4.0.0'
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.7.0
+  flutter_launcher_icons: ^0.13.1
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "app_icon.png"
 
-      - name: Set up Flutter SDK
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Create Android Project Files
-        run: flutter create . --platforms=android
-
-      - name: Get Dependencies
-        run: flutter pub get
-
-      - name: Build Release APK
-        run: flutter build apk --release
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pb-live-app
-          path: build/app/outputs/flutter-apk/app-release.apk
-          
+flutter:
+  uses-material-design: true
+  
