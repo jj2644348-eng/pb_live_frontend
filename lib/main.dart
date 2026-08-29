@@ -1,49 +1,58 @@
 import 'package:flutter/material.dart';
+import 'screens/live_room_screen.dart';
+import 'controllers/room_controller.dart';
 
 void main() {
-  runApp(const PBLiveApp());
+  runApp(const MaterialApp(
+    home: HomeScreen(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
-class PBLiveApp extends StatelessWidget {
-  const PBLiveApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'PB Live Party',
-      theme: ThemeData.dark(),
-      home: const LiveRoomsPage(),
-    );
-  }
-}
-
-class LiveRoomsPage extends StatelessWidget {
-  const LiveRoomsPage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0F0C20),
       appBar: AppBar(
-        title: const Text('Official Tech Love PB'),
-        backgroundColor: Colors.deepPurple,
+        title: const Text("Official Tech Love PB"),
+        backgroundColor: const Color(0xFF1A1635),
       ),
       body: ListView.builder(
         itemCount: 5,
+        padding: const EdgeInsets.all(12),
         itemBuilder: (context, index) {
           return Card(
-            margin: const EdgeInsets.all(8.0),
+            color: const Color(0xFF1E193D),
+            margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
               leading: const CircleAvatar(
                 backgroundColor: Colors.purpleAccent,
                 child: Icon(Icons.mic, color: Colors.white),
               ),
-              title: Text('PB Live Party Room #${index + 1}'),
-              subtitle: const Text('Live audio chatting & room active...'),
+              title: Text(
+                "PB Live Party Room #${index + 1}",
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              subtitle: const Text(
+                "Live audio chatting & 8 Mic Seats",
+                style: TextStyle(color: Colors.grey),
+              ),
               trailing: ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: () {},
-                child: const Text('Join'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LiveRoomScreen(
+                        roomTitle: "PB Live Party Room #${index + 1}",
+                      ),
+                    ),
+                  );
+                },
+                child: const Text("Join", style: TextStyle(color: Colors.white)),
               ),
             ),
           );
