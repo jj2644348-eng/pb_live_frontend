@@ -8,10 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -19,38 +17,16 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Flutter SDK
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.19.6'
           channel: 'stable'
-          cache: true
 
-      - name: Create Android Project Files & Generate Icons
+      - name: Create Android Project Structure if Missing
         run: |
-          # Create Android scaffold if not present
           if [ ! -d "android" ]; then
-            flutter create . --org com.techlovepb.party --project-name pb_live_frontend
-          fi
-
-          # Install ImageMagick to generate Android launcher icons from uploaded app_icon.png
-          if [ -f "app_icon.png" ]; then
-            sudo apt-get update && sudo apt-get install -y imagemagick
-            
-            # Target Android drawable/mipmap folders
-            mkdir -p android/app/src/main/res/mipmap-mdpi
-            mkdir -p android/app/src/main/res/mipmap-hdpi
-            mkdir -p android/app/src/main/res/mipmap-xhdpi
-            mkdir -p android/app/src/main/res/mipmap-xxhdpi
-            mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-
-            # Convert to standard Android launcher sizes
-            convert app_icon.png -resize 48x48 android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-            convert app_icon.png -resize 72x72 android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-            convert app_icon.png -resize 96x96 android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-            convert app_icon.png -resize 144x144 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-            convert app_icon.png -resize 192x192 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
-            
-            echo "Custom 3D App Icon successfully generated and applied!"
+            flutter create . --org com.techlovepb.pblive --platforms android
           fi
 
       - name: Get Dependencies
@@ -59,9 +35,8 @@ jobs:
       - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: PB-Live-Party-Club-App
+          name: PB-Live-Official-APK
           path: build/app/outputs/flutter-apk/app-release.apk
-          
