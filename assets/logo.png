@@ -1,5 +1,0 @@
-CircleAvatar(
-  radius: 30,
-  backgroundImage: AssetImage('assets/logo.png'),
-)
-
