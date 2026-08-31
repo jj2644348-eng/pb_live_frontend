@@ -24,6 +24,9 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Create Flutter Project Structure
+        run: flutter create . --org com.pblive.party --project-name pb_live_frontend --platforms android
+
       - name: Install Dependencies
         run: flutter pub get
 
