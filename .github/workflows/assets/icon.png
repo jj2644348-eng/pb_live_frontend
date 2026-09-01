@@ -1,1 +1,1 @@
-
+Image.asset("assets/icon.png", width: 100, height: 100, errorBuilder: (c, e, s) => const Icon(Icons.shield, size: 80, color: Colors.amber))
