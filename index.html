@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Voice Chat Room</title>
+    <style>
+        body { background-color: #120826; color: white; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .room-header { display: flex; justify-content: space-between; align-items: center; }
+        .seats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 30px; }
+        .seat { background: rgba(255, 255, 255, 0.1); border-radius: 50%; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; margin: auto; border: 2px dashed #fff; }
+        .seat.occupied { border: 2px solid #ff00ff; background: rgba(255, 0, 255, 0.2); }
+        .chat-box { margin-top: 40px; height: 150px; background: rgba(0,0,0,0.3); padding: 10px; overflow-y: scroll; border-radius: 8px; }
+        .controls { margin-top: 20px; display: flex; gap: 10px; }
+        input, button { padding: 10px; border-radius: 5px; border: none; }
+        input { background: #2a1b4e; color: white; flex: 1; }
+        button { background: #ff00ff; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="room-header">
+        <h2 id="roomTitle">The Glam Room ✨</h2>
+        <span id="userCount">👥 0</span>
+    </div>
+
+    <div class="seats-grid" id="seatsGrid">
+        </div>
+
+    <div class="chat-box" id="chatBox">
+        <div><strong>System:</strong> Welcome to the party room!</div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="messageInput" placeholder="Type Something...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const roomId = "room_101";
+        const username = prompt("Enter your name:") || "Guest";
+
+        socket.emit('join_room', { roomId, username });
+
+        // Generate 8 Seats Dynamically
+        const seatsGrid = document.getElementById('seatsGrid');
+        for (let i = 0; i < 8; i++) {
+            const seatDiv = document.createElement('div');
+            seatDiv.className = 'seat';
+            seatDiv.innerText = i + 1;
+            seatDiv.onclick = () => takeSeat(i);
+            seatDiv.id = `seat-${i}`;
+            seatsGrid.appendChild(seatDiv);
+        }
+
+        function takeSeat(index) {
+            socket.emit('take_seat', { roomId, seatIndex: index, username });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            if(input.value.trim() !== "") {
+                socket.emit('send_message', { roomId, message: input.value, username });
+                input.value = "";
+            }
+        }
+
+        socket.on('update_room', (roomData) => {
+            roomData.seats.forEach((seat, index) => {
+                const seatElement = document.getElementById(`seat-${index}`);
+                if (seat) {
+                    seatElement.classList.add('occupied');
+                    seatElement.innerText = seat.username.substring(0, 4);
+                } else {
+                    seatElement.classList.remove('occupied');
+                    seatElement.innerText = index + 1;
+                }
+            });
+        });
+
+        socket.on('receive_message', (data) => {
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div><strong>${data.username}:</strong> ${data.message}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+</body>
+</html>
+
