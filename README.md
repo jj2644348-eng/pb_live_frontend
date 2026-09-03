@@ -6,14 +6,14 @@
 ---
 
 ## 🚀 About the Project
-**PB Live** is a full-featured real-time live streaming and multi-seat voice party application (similar to top social chat platforms). It features 12-seat interactive audio party rooms, persistent profile management, custom room creation, and a sleek dark-purple UI theme.
+**PB Live** is a full-featured real-time live streaming and multi-seat voice party application. It features 12-seat interactive audio party rooms, persistent profile management, custom room creation, and a sleek dark-purple UI theme.
 
 ---
 
 ## ✨ Key Features Included
 * **12-Seat Interactive Audio Rooms:** Real-time seat management where users can take a mic or leave seats.
-* **Persistent Profile System:** Automatic local storage (`SharedPreferences`) of user DP and display names, ensuring profile data persists across app sessions.
-* **Dynamic Gallery Picker:** Allows users to pick and update their profile pictures directly from their device gallery using `image_picker`.
+* **Persistent Profile System:** Automatic local storage of user DP and display names, ensuring profile data persists across app sessions.
+* **Dynamic Gallery Picker:** Allows users to pick and update their profile pictures directly from their device gallery.
 * **Multi-Tab Navigation:** Integrated bottom navigation bar housing Home, Messages, Room Creation (+), Rankings, and Profile screens.
 * **Modern Dark Theme:** Custom-styled dark purple interface with bright neon accents tailored for live-streaming experiences.
 
@@ -22,9 +22,7 @@
 ## 🛠️ Tech Stack
 * **Framework:** Flutter (Dart)
 * **State Management:** Stateful Widgets & Local Storage
-* **Key Packages:** 
-  * `image_picker` (For gallery image selection)
-  * `shared_preferences` (For persistent profile data)
+* **Key Packages:** `image_picker`, `shared_preferences`
 
 ---
 
