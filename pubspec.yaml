@@ -1,6 +1,6 @@
 name: pb_live_frontend
 description: "PB Live Party Audio App"
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -10,18 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-
-dependencies:
-  flutter:
-    sdk: flutter
   image_picker: ^1.0.7
-  
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
 
 flutter:
   uses-material-design: true
-
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/icon.png"
   
