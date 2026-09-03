@@ -958,4 +958,105 @@ class _RoomViewState extends State<RoomView> {
     );
   }
 }
+  void _showGiftsDialog(BuildContext context) {
+    final List<Map<String, dynamic>> gifts = [
+      {"name": "Red Rose 🌹", "price": "10 💎", "isGif": false},
+      {"name": "Star Magic ✨", "price": "50 💎", "isGif": false},
+      {"name": "Birthday Cake 🎂", "price": "200 💎", "isGif": false},
+      {"name": "Animated Sports Car 🏎️💨", "price": "500 💎", "isGif": true, "gifUrl": "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif"},
+      {"name": "Royal Crown 👑", "price": "1000 💎", "isGif": false},
+      {"name": "PB DJ Party Animation 🎊", "price": "2500 💎", "isGif": true, "gifUrl": "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif"},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1A0D33),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(16),
+        height: 310,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Send Room Party Gifts & GIFs 🎁", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amber)),
+            const SizedBox(height: 10),
+            Expanded(
+              child: GridView.builder(
+                itemCount: gifts.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 1.8,
+                ),
+                itemBuilder: (context, index) {
+                  bool isGifGift = gifts[index]['isGif'] ?? false;
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isGifGift ? const Color(0xFF4A154B) : const Color(0xFF2A1548),
+                      side: isGifGift ? const BorderSide(color: Color(0xFFFF00FF), width: 1.5) : BorderSide.none,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        if (isGifGift) {
+                          _roomMessages.add("🎬 ANIME GIF SENT: ${gifts[index]['name']}! 🎉 (Free Lvl +2)");
+                          freeLevel += 2;
+                        } else {
+                          _roomMessages.add("🎁 Gift sent: ${gifts[index]['name']}! (Free Level +1)");
+                          freeLevel += 1;
+                        }
+                      });
+
+                      // अगर GIF गिफ्ट है तो स्क्रीन पर बड़ा सा एनिमेटेड पॉपअप दिखाना
+                      if (isGifGift) {
+                        showDialog(
+                          context: context,
+                          builder: (dialogCtx) => AlertDialog(
+                            backgroundColor: Colors.transparent,
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("🎉 ${gifts[index]['name']} 🎉", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber)),
+                                const SizedBox(height: 10),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    gifts[index]['gifUrl'],
+                                    height: 180,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (c, e, s) => const Icon(Icons.card_giftcard, size: 80, color: Color(0xFFFF00FF)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                        // 2 सेकंड बाद पॉपअप ऑटोमैटिक बंद हो जाएगा
+                        Future.delayed(const Duration(seconds: 2), () {
+                          if (Navigator.canPop(context)) {
+                            Navigator.pop(context);
+                          }
+                        });
+                      }
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (isGifGift) const Icon(Icons.gif_box, size: 16, color: Colors.pinkAccent),
+                        Text(gifts[index]['name'], style: const TextStyle(fontSize: 10, color: Colors.white), textAlign: TextAlign.center),
+                        Text(gifts[index]['price'], style: const TextStyle(fontSize: 9, color: Colors.amber)),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
