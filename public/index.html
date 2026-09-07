@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Audio & Video Party App</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 10px; }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; border-radius: 5px; border: none; }
+        input { background: #2d2d2d; color: #fff; }
+        button { background: #ff4757; color: white; font-weight: bold; cursor: pointer; }
+        #chat-box { height: 300px; background: #252525; border-radius: 5px; overflow-y: scroll; padding: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Live Party Room</h2>
+        <div id="login-section">
+            <input type="text" id="username" placeholder="Enter your name">
+            <input type="text" id="room-id" placeholder="Enter Room ID">
+            <button onclick="joinRoom()">Join Room</button>
+        </div>
+        
+        <div id="room-section" style="display:none;">
+            <h3>Room: <span id="display-room"></span></h3>
+            <div id="chat-box"></div>
+            <input type="text" id="message-input" placeholder="Type a message or send gift...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let currentRoom = '';
+        let myName = '';
+
+        function joinRoom() {
+            myName = document.getElementById('username').value;
+            currentRoom = document.getElementById('room-id').value;
+
+            if(myName && currentRoom) {
+                socket.emit('join-room', { roomId: currentRoom, username: myName });
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('room-section').style.display = 'block';
+                document.getElementById('display-room').innerText = currentRoom;
+            } else {
+                alert('Please fill in both fields.');
+            }
+        }
+
+        function sendMessage() {
+            const msg = document.getElementById('message-input').value;
+            if(msg) {
+                socket.emit('send-message', { roomId: currentRoom, username: myName, message: msg });
+                document.getElementById('message-input').value = '';
+            }
+        }
+
+        socket.on('receive-message', (data) => {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += `<p><b>${data.username}:</b> ${data.message} <span style="font-size:10px; color:gray;">(${data.timestamp})</span></p>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        socket.on('user-joined', (data) => {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += `<p style="color: #2ed573; font-style:italic;">${data.message}</p>`;
+        });
+    </script>
+</body>
+</html>
+
