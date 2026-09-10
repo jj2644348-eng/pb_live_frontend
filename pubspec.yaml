@@ -1,6 +1,7 @@
 name: pb_live_frontend
-description: "PB Live Party Audio App"
+description: "A new Flutter project."
 publish_to: 'none'
+
 version: 1.0.0+1
 
 environment:
@@ -9,15 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
-  image_picker: ^1.0.7
-  provider: ^6.1.1
-  shared_preferences: ^2.2.2
+  google_sign_in: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-  dependencies:
-  flutter:
-    sdk: flutter
-  google_sign_in: ^6.2.1
-
+  
