@@ -1,0 +1,16 @@
+  Future<void> _handleSignIn() async {
+    setState(() => _isLoading = true);
+    try {
+      final account = await _googleSignIn.signIn();
+      setState(() {
+        _currentUser = account;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login Error: $e')),
+      );
+    }
+  }
+
