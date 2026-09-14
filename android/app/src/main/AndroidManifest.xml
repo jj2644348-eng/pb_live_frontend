@@ -5,6 +5,11 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher">
         
+        <!-- Yeh meta-data line zaroori hai error hatane ke liye -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,4 +24,3 @@
         </activity>
     </application>
 </manifest>
-
