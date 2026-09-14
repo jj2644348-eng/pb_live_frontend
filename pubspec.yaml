@@ -1,6 +1,6 @@
-name: pb_live_frontend
-description: "A new Flutter project."
-publish_to: 'none'
+name: voice_chat_room
+description: A feature-rich Flutter application for creating and managing voice chat rooms with real-time communication, gift system, and social features.
+publish_to: 'none' 
 
 version: 1.0.0+1
 
@@ -10,13 +10,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_sign_in: ^6.2.1
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
 
 flutter:
   uses-material-design: true
-  
+  assets:
+    - assets/images/
+    
