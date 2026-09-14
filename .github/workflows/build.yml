@@ -39,3 +39,6 @@ jobs:
           name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
   
+flutter clean
+flutter pub get
+flutter build apk --debug
