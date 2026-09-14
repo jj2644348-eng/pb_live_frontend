@@ -24,21 +24,17 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Create Flutter Project Structure
-        run: flutter create . --org com.pblive.party --project-name pb_live_frontend --platforms android
-
       - name: Install Dependencies
-        run: flutter pub get
+        run: |
+          flutter clean
+          flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
-  
-flutter clean
-flutter pub get
-flutter build apk --debug
+          name: app-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          
